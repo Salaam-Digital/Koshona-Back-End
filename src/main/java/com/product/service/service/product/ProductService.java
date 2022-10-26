@@ -1,20 +1,23 @@
 package com.product.service.service.product;
 
-import com.product.service.dto.ApiResponse;
+import com.product.service.dto.ApiResponseWithList;
+import com.product.service.dto.ApiResponseWithObject;
 import com.product.service.dto.productdetails.ProductDetailsDto;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
 
-    ApiResponse createProduct(ProductDetailsDto productDetailsDto);
+    ApiResponseWithObject createProduct(ProductDetailsDto productDetailsDto, MultipartFile[] files);
 
-    ApiResponse updateProduct(ProductDetailsDto productDetailsDto);
+    ApiResponseWithObject updateProduct(ProductDetailsDto productDetailsDto);
 
-    ApiResponse deleteProduct(Long productId);
+    ApiResponseWithObject deleteProduct(Long productId);
 
-    ApiResponse getProductById(Long id);
+    ApiResponseWithObject getProductById(Long id);
 
-    ApiResponse getAllProducts();
+    ApiResponseWithList getAllProducts();
 
-    ApiResponse getListOfProducts();
+    ApiResponseWithList getListOfProducts();
 
 }

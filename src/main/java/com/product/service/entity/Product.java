@@ -16,11 +16,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private Long userId;
     private Double price;
     private Integer roomCount;
@@ -54,11 +52,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private HomeMaterial material;
 
-    //TODO Create another class for it
-    private String createdAt;
-    private String update_at;
-
-
-    @OneToMany
-    private List<Image> imageList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<Image> images;
 }

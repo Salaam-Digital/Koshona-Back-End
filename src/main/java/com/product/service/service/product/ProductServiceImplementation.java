@@ -1,13 +1,16 @@
 package com.product.service.service.product;
 
-import com.product.service.dto.ApiResponse;
+import com.product.service.dto.ApiResponseWithList;
+import com.product.service.dto.ApiResponseWithObject;
 import com.product.service.dto.listProduct.ListOfProductsDto;
 import com.product.service.dto.productdetails.ProductDetailsDto;
 import com.product.service.entity.Product;
 import com.product.service.exception.ProductException;
 import com.product.service.repository.ProductRepository;
+import com.product.service.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,46 +23,50 @@ public class ProductServiceImplementation implements ProductService {
 
 
     private final ProductRepository productRepository;
+    private final ImageService imageService;
 
 
     @Override
-    public ApiResponse createProduct(ProductDetailsDto detailsDto) {
+    public ApiResponseWithObject createProduct(ProductDetailsDto detailsDto, MultipartFile[] files) {
         Product product = new Product();
+        if (files != null) {
+            product.setImages(imageService.images(files));
+        }
         Product productEntity = productRepository.save(saveOrUpdateProduct(detailsDto, product));
-        return apiResponse(productEntity, null);
+        return apiResponse(productEntity);
     }
 
     @Override
-    public ApiResponse updateProduct(ProductDetailsDto productDetailsDto) {
-        Product productEntity = findProductById(productDetailsDto.getId());
-        return apiResponse(productEntity, null);
+    public ApiResponseWithObject updateProduct(ProductDetailsDto productDetailsDto) {
+        Product product = findProductById(productDetailsDto.getId());
+        Product productEntity = productRepository.save(saveOrUpdateProduct(productDetailsDto, product));
+        return apiResponse(productEntity);
     }
 
     @Override
-    public ApiResponse deleteProduct(Long productId) {
+    public ApiResponseWithObject deleteProduct(Long productId) {
         findProductById(productId);
         productRepository.deleteById(productId);
-        return apiResponse(null, null);
+        return apiResponse((Product) null);
     }
 
     @Override
-    public ApiResponse getProductById(Long id) {
+    public ApiResponseWithObject getProductById(Long id) {
         Product productEntity = findProductById(id);
-        return apiResponse(productEntity, null);
+        return apiResponse(productEntity);
     }
 
     @Override
-    public ApiResponse getAllProducts() {
-        return apiResponse(null, Collections.singletonList(productRepository.findAll()));
+    public ApiResponseWithList getAllProducts() {
+        return apiResponse(Collections.singletonList(productRepository.findAll()));
     }
 
     @Override
-    public ApiResponse getListOfProducts() {
+    public ApiResponseWithList getListOfProducts() {
         List<Product> products = productRepository.findAll();
         List<ListOfProductsDto> list = new ArrayList<>();
         for (Product product : products) {
             ListOfProductsDto productsDto = new ListOfProductsDto();
-            productsDto.setId(product.getId());
             productsDto.setUserId(product.getUserId());
             productsDto.setAddress(product.getAddress());
             productsDto.setCurrency(product.getCurrency());
@@ -68,7 +75,6 @@ public class ProductServiceImplementation implements ProductService {
             productsDto.setLan(product.getLan());
             productsDto.setLat(product.getLat());
             productsDto.setFloorNumber(product.getFloorNumber());
-            productsDto.setImages(product.getImageList());
             productsDto.setPrice(product.getPrice());
             productsDto.setIsFavorite(product.getIsFavorite());
             productsDto.setPhoneNumber(product.getPhoneNumber());
@@ -77,34 +83,32 @@ public class ProductServiceImplementation implements ProductService {
             list.add(productsDto);
         }
 
-        return apiResponse(null, Collections.singletonList(list));
+        return apiResponse(Collections.singletonList(list));
     }
 
     private Product saveOrUpdateProduct(ProductDetailsDto detailsDto, Product product) {
-        product.setId(detailsDto.getId());
         product.setUserId(detailsDto.getUserId());
         product.setPrice(detailsDto.getPrice());
-        product.setRoomCount(detailsDto.getRoom_count());
-        product.setTotalArea(detailsDto.getTotal_area());
-        product.setFloorNumber(detailsDto.getFloor_number());
+        product.setRoomCount(detailsDto.getRoomCount());
+        product.setTotalArea(detailsDto.getTotalArea());
+        product.setFloorNumber(detailsDto.getFloorNumber());
         product.setAddress(detailsDto.getAddress());
-        product.setFloorCount(detailsDto.getFloor_count());
+        product.setFloorCount(detailsDto.getFloorCount());
         product.setIsFavorite(detailsDto.getIsFavorite());
         product.setLan(detailsDto.getLan());
         product.setLat(detailsDto.getLat());
-        product.setPhoneNumber(detailsDto.getPhone_number());
+        product.setPhoneNumber(detailsDto.getPhoneNumber());
         product.setEnablePhone(detailsDto.getEnablePhone());
-        product.setEnableChat(detailsDto.getEnable_chat());
-        product.setAreaLength(detailsDto.getLiving_area());
-        product.setTotalArea(detailsDto.getTotal_area());
+        product.setEnableChat(detailsDto.getEnableChat());
+        product.setAreaLength(detailsDto.getLivingArea());
+        product.setTotalArea(detailsDto.getTotalArea());
         product.setWithFurniture(detailsDto.getWithFurniture());
         product.setBalcony(detailsDto.getBalcony());
-        product.setBuiltYear(detailsDto.getBuilt_year());
+        product.setBuiltYear(detailsDto.getBuiltYear());
         product.setElevator(detailsDto.getElevator());
         product.setParking(detailsDto.getParking());
         product.setDescription(detailsDto.getDescription());
-        product.setViewCount(detailsDto.getView_count());
-        product.setImageList(detailsDto.getImages());
+        product.setViewCount(detailsDto.getViewCount());
 
         // TODO ENUMS
         product.setCurrency(detailsDto.getCurrency());
@@ -123,12 +127,19 @@ public class ProductServiceImplementation implements ProductService {
         throw new ProductException("Product with such Id not found");
     }
 
-    private ApiResponse apiResponse(Product product, List<Object> products) {
-        ApiResponse apiResponse = new ApiResponse();
+    private ApiResponseWithObject apiResponse(Product product) {
+        ApiResponseWithObject apiResponse = new ApiResponseWithObject();
         apiResponse.setStatus(true);
         apiResponse.setMessage("SUCCESS");
         apiResponse.setData(product);
-        apiResponse.setListOfData(products);
+        return apiResponse;
+    }
+
+    private ApiResponseWithList apiResponse(List<Object> products) {
+        ApiResponseWithList apiResponse = new ApiResponseWithList();
+        apiResponse.setStatus(true);
+        apiResponse.setMessage("SUCCESS");
+        apiResponse.setData(products);
         return apiResponse;
     }
 }

@@ -18,32 +18,31 @@ public class ProductDetailsDto {
     private List<Image> images;
     private Double price;
     private Currency currency;
-    //Xonalar soni
-    private Integer room_count;
+    private Integer roomCount;
     //Kvadrat metr umumiy ??
-    private Double total_area;
+    private Double totalArea;
     //Nechinchi qavat
-    private Integer floor_number;
+    private Integer floorNumber;
     //Jami necha qavatli
-    private Integer floor_count;
+    private Integer floorCount;
     private String address;
     //favorite ga qoshish izbranniy
     private Boolean isFavorite;
     private Double lat;
     private Double lan;
     private Double longitude;
-    private String phone_number;
+    private String phoneNumber;
     private Boolean enablePhone;
-    private Boolean enable_chat;
-    private String created_at;
-    private String update_at;
+    private Boolean enableChat;
+    private String createdAt;
+    private String updatedAt;
     //yashash maydoni
-    private Double living_area;
+    private Double livingArea;
     //balkon
     private Boolean balcony;
     //Mebellari bn birga sotiladimi
     private Boolean withFurniture;
-    private Integer built_year;
+    private Integer builtYear;
     //ENUM
     private HomeType type;
     //ENUM uy materiali
@@ -52,5 +51,5 @@ public class ProductDetailsDto {
     private Boolean parking;
     private String description;
     // prosmotr
-    private Integer view_count;
+    private Integer viewCount;
 }
