@@ -18,6 +18,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ApiResponseWithObject findProductById(@PathVariable("id") Long productId) {
+        System.out.println("Something to push");
         return productService.getProductById(productId);
     }
 
