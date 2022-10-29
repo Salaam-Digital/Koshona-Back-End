@@ -3,14 +3,14 @@ package com.product.service.service.product;
 import com.product.service.dto.ApiResponseWithList;
 import com.product.service.dto.ApiResponseWithObject;
 import com.product.service.dto.listProduct.ListOfProductsDto;
-import com.product.service.dto.productdetails.ProductDetailsDto;
+import com.product.service.dto.productdetails.ProductDetailsForUpdate;
+import com.product.service.entity.Image;
 import com.product.service.entity.Product;
 import com.product.service.exception.ProductException;
+import com.product.service.repository.ImageRepository;
 import com.product.service.repository.ProductRepository;
-import com.product.service.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,21 +23,25 @@ public class ProductServiceImplementation implements ProductService {
 
 
     private final ProductRepository productRepository;
-    private final ImageService imageService;
+    private final ImageRepository imageRepository;
 
 
     @Override
-    public ApiResponseWithObject createProduct(ProductDetailsDto detailsDto, MultipartFile[] files) {
+    public ApiResponseWithObject createProduct(ProductDetailsForUpdate detailsDto) {
         Product product = new Product();
-        if (files != null) {
-            product.setImages(imageService.images(files));
-        }
         Product productEntity = productRepository.save(saveOrUpdateProduct(detailsDto, product));
+        Optional<List<Image>> images = imageRepository.findByUuid(detailsDto.getUniqueId());
+        if (images.isPresent()) {
+            for (Image image : images.get()) {
+                image.setProduct(productEntity);
+                imageRepository.save(image);
+            }
+        }
         return apiResponse(productEntity);
     }
 
     @Override
-    public ApiResponseWithObject updateProduct(ProductDetailsDto productDetailsDto) {
+    public ApiResponseWithObject updateProduct(ProductDetailsForUpdate productDetailsDto) {
         Product product = findProductById(productDetailsDto.getId());
         Product productEntity = productRepository.save(saveOrUpdateProduct(productDetailsDto, product));
         return apiResponse(productEntity);
@@ -86,7 +90,7 @@ public class ProductServiceImplementation implements ProductService {
         return apiResponse(Collections.singletonList(list));
     }
 
-    private Product saveOrUpdateProduct(ProductDetailsDto detailsDto, Product product) {
+    private Product saveOrUpdateProduct(ProductDetailsForUpdate detailsDto, Product product) {
         product.setUserId(detailsDto.getUserId());
         product.setPrice(detailsDto.getPrice());
         product.setRoomCount(detailsDto.getRoomCount());
@@ -109,6 +113,7 @@ public class ProductServiceImplementation implements ProductService {
         product.setParking(detailsDto.getParking());
         product.setDescription(detailsDto.getDescription());
         product.setViewCount(detailsDto.getViewCount());
+        product.setUniqueId(detailsDto.getUniqueId());
 
         // TODO ENUMS
         product.setCurrency(detailsDto.getCurrency());

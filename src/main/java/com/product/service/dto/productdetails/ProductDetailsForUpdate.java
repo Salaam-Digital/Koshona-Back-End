@@ -11,11 +11,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductDetailsDto {
+public class ProductDetailsForUpdate {
 
     private Long id;
     private Long userId;
-    private List<Image> images;
     private Double price;
     private Currency currency;
     private Integer roomCount;
@@ -50,6 +49,7 @@ public class ProductDetailsDto {
     private Boolean elevator;
     private Boolean parking;
     private String description;
+    private String uniqueId;
     // prosmotr
     private Integer viewCount;
 }

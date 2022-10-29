@@ -2,7 +2,7 @@ package com.product.service.controller;
 
 import com.product.service.dto.ApiResponseWithList;
 import com.product.service.dto.ApiResponseWithObject;
-import com.product.service.dto.productdetails.ProductDetailsDto;
+import com.product.service.dto.productdetails.ProductDetailsForUpdate;
 import com.product.service.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,6 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ApiResponseWithObject findProductById(@PathVariable("id") Long productId) {
-        System.out.println("Something to push");
         return productService.getProductById(productId);
     }
 
@@ -33,12 +32,12 @@ public class ProductController {
     }
 
     @PostMapping("/creation")
-    public ApiResponseWithObject createProduct(@RequestBody ProductDetailsDto productDetailsDto, @RequestParam("file") MultipartFile[] files) {
-        return productService.createProduct(productDetailsDto,files);
+    public ApiResponseWithObject createProduct(@RequestBody ProductDetailsForUpdate productDetailsDto) {
+        return productService.createProduct(productDetailsDto);
     }
 
     @PutMapping("/edition")
-    public ApiResponseWithObject updateProduct(@RequestBody ProductDetailsDto productDetailsDto) {
+    public ApiResponseWithObject updateProduct(@RequestBody ProductDetailsForUpdate productDetailsDto) {
         return productService.updateProduct(productDetailsDto);
     }
 

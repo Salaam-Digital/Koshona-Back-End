@@ -1,4 +1,4 @@
-package com.product.service.entity;
+package com.product.service.dto.productdetails;
 
 import com.product.service.entity.constants.Currency;
 import com.product.service.entity.constants.HomeMaterial;
@@ -8,44 +8,38 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseEntity{
+public class ProductDetailsForCreation {
+
 
     private Long userId;
     private Double price;
+    private Currency currency;
     private Integer roomCount;
     private Double totalArea;
     private Integer floorNumber;
     private Integer floorCount;
     private String address;
     private Boolean isFavorite;
-    private Double lan;
     private Double lat;
+    private Double lan;
+    private Double longitude;
     private String phoneNumber;
     private Boolean enablePhone;
     private Boolean enableChat;
-    private Double areaLength;
+    private String createdAt;
+    private String updatedAt;
+    private Double livingArea;
     private Boolean balcony;
     private Boolean withFurniture;
     private Integer builtYear;
+    private HomeType type;
+    private HomeMaterial material;
     private Boolean elevator;
     private Boolean parking;
     private String description;
     private Integer viewCount;
-    private String uniqueId;
-
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
-    @Enumerated(EnumType.STRING)
-    private HomeType type;
-    @Enumerated(EnumType.STRING)
-    private HomeMaterial material;
-
 }

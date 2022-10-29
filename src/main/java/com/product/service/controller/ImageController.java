@@ -25,8 +25,8 @@ public class ImageController {
      * @return return saved image info with ImageResponse class.
      */
     @PostMapping("/upload")
-    public ApiResponseWithObject uploadSingleFile(@RequestParam("file") MultipartFile file) {
-        return imageService.uploadSingleFile(file);
+    public ApiResponseWithObject uploadSingleFile(@RequestParam("file") MultipartFile file, @RequestParam(name = "uniqueId", required = false) String uniqueId) {
+        return imageService.uploadSingleFile(file, uniqueId);
     }
 
     /**
@@ -36,8 +36,8 @@ public class ImageController {
      * @return return saved images info list with ImageResponse class.
      */
     @PostMapping("/uploads")
-    public ApiResponseWithList uploadMultiFiles(@RequestParam("files") MultipartFile[] files) {
-        return imageService.uploadMultipleFiles(files);
+    public ApiResponseWithList uploadMultiFiles(@RequestParam("files") MultipartFile[] files, @RequestParam(name = "uniqueId", required = false) String uniqueId) {
+        return imageService.uploadMultipleFiles(files, uniqueId);
     }
 
     /**

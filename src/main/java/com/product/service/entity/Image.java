@@ -123,10 +123,12 @@ public class Image extends BaseEntity {
      * @return return new Image class related with file.
      */
     @Transient
-    public static Image buildImage(MultipartFile file, FileNameHelper helper) {
+    public static Image buildImage(MultipartFile file, FileNameHelper helper, Product product, String uniqueId) {
         String fileName = helper.generateDisplayName(file.getOriginalFilename());
 
         Image image = Image.build();
+        image.setUuid(uniqueId);
+        image.setProduct(product);
         image.setFileName(fileName);
         image.setFiles(file);
 
