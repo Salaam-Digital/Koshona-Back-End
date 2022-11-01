@@ -1,0 +1,39 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.5-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+}
+
+group = 'com.product'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.4'
+	implementation 'org.zalando:problem-spring-web-starter:0.25.2'
+	implementation 'io.github.openfeign:feign-httpclient:11.8'
+	implementation group: 'joda-time', name: 'joda-time', version: '2.11.1'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
