@@ -1,5 +1,6 @@
 package com.product.service.dto.productdetails;
 
+import com.product.service.dto.image.ImageResponse;
 import com.product.service.entity.Image;
 import com.product.service.entity.constants.Currency;
 import com.product.service.entity.constants.HomeMaterial;
@@ -15,7 +16,7 @@ public class ProductDetailsDto {
 
     private Long id;
     private Long userId;
-    private List<Image> images;
+    private List<ImageResponse> images;
     private Double price;
     private Currency currency;
     private Integer roomCount;
@@ -53,7 +54,7 @@ public class ProductDetailsDto {
     // prosmotr
     private Integer viewCount;
 
-    public ProductDetailsDto(Long userId, List<Image> images, Double price, Currency currency, Integer roomCount, Double totalArea, Integer floorNumber, Integer floorCount, String address, Boolean isFavorite, Double lat, Double lan, Double longitude, String phoneNumber, Boolean enablePhone, Boolean enableChat, String createdAt, String updatedAt, Double livingArea, Boolean balcony, Boolean withFurniture, Integer builtYear, HomeType type, HomeMaterial material, Boolean elevator, Boolean parking, String description, Integer viewCount) {
+    public ProductDetailsDto(Long userId, List<ImageResponse> images, Double price, Currency currency, Integer roomCount, Double totalArea, Integer floorNumber, Integer floorCount, String address, Boolean isFavorite, Double lat, Double lan, Double longitude, String phoneNumber, Boolean enablePhone, Boolean enableChat, String createdAt, String updatedAt, Double livingArea, Boolean balcony, Boolean withFurniture, Integer builtYear, HomeType type, HomeMaterial material, Boolean elevator, Boolean parking, String description, Integer viewCount) {
         this.userId = userId;
         this.images = images;
         this.price = price;

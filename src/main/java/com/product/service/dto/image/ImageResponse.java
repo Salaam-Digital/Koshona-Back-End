@@ -16,6 +16,7 @@ public class ImageResponse {
     private String fileName;
     private String fileType;
     private long size;
+    private String linkForDownload;
 
     public ImageResponse(Image image) {
         setUuid(image.getUuid());

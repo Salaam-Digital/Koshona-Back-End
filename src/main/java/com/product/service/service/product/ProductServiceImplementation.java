@@ -12,6 +12,8 @@ import com.product.service.entity.constants.HomeType;
 import com.product.service.exception.ProductException;
 import com.product.service.repository.ProductRepository;
 import com.product.service.service.image.ImageService;
+import com.product.service.utils.URLEncoder;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ public class ProductServiceImplementation implements ProductService {
 
 
     private final ProductRepository productRepository;
+    private final URLEncoder urlEncoder = new URLEncoder();
     private final ImageService imageService;
 
 
@@ -73,7 +76,7 @@ public class ProductServiceImplementation implements ProductService {
             List<Image> images = imageService.findAllImages(product.getId());
             product.setImages(images);
             ListOfProductsDto productsDto = new ListOfProductsDto();
-            productsDto.setImages(product.getImages());
+            productsDto.setImages(imageService.setImageDetails(images));
             productsDto.setId(product.getId());
             productsDto.setUserId(product.getUserId());
             productsDto.setAddress(product.getAddress());

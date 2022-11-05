@@ -2,6 +2,8 @@ package com.product.service.service.image;
 
 import com.product.service.dto.ApiResponseWithList;
 import com.product.service.dto.ApiResponseWithObject;
+import com.product.service.dto.ImageDto;
+import com.product.service.dto.image.ImageResponse;
 import com.product.service.entity.Image;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,4 +22,6 @@ public interface ImageService {
     List<Image> images(MultipartFile[] files);
 
     List<Image> findAllImages(Long id);
+
+    List<ImageResponse> setImageDetails(List<Image> images);
 }

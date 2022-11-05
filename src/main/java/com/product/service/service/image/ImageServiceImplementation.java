@@ -2,13 +2,17 @@ package com.product.service.service.image;
 
 import com.product.service.dto.ApiResponseWithList;
 import com.product.service.dto.ApiResponseWithObject;
+import com.product.service.dto.ImageDto;
+import com.product.service.dto.image.ImageResponse;
 import com.product.service.entity.Image;
 import com.product.service.repository.ImageRepository;
 import com.product.service.utils.FileNameHelper;
+import com.product.service.utils.URLEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 public class ImageServiceImplementation implements ImageService {
 
     private final ImageRepository imageRepository;
+    private final URLEncoder encoder = new URLEncoder();
     private final FileNameHelper fileHelper;
 
     @Override
@@ -53,6 +58,21 @@ public class ImageServiceImplementation implements ImageService {
     @Override
     public List<Image> findAllImages(Long id) {
         return imageRepository.findAllById(id);
+    }
+
+    @Override
+    public List<ImageResponse> setImageDetails(List<Image> images) {
+        List<ImageResponse> imageResponse = new ArrayList<>();
+        images.stream().forEach(image -> {
+            ImageResponse imageResponse1 = new ImageResponse();
+            imageResponse1.setFileName(image.getFileName());
+            imageResponse1.setFileType(image.getFileType());
+            imageResponse1.setUuid(image.getUuid());
+            imageResponse1.setSize(image.getSize());
+            imageResponse1.setLinkForDownload(encoder.encode(image));
+            imageResponse.add(imageResponse1);
+        });
+        return imageResponse;
     }
 
 
