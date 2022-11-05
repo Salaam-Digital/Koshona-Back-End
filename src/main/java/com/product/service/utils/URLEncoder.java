@@ -1,18 +1,20 @@
 package com.product.service.utils;
 
 import com.product.service.entity.Image;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
+@Component
 public class URLEncoder {
-    public static String decoder(String givenURL){
+
+
+    public String decoder(String givenURL) {
         try {
-            givenURL = "http://localhost:8080/image/show/"+givenURL;
-            String decodedURL = URLDecoder.decode(givenURL , StandardCharsets.UTF_8.name());
+            givenURL = "http://localhost:8080/image/show/" + givenURL;
+            String decodedURL = URLDecoder.decode(givenURL, StandardCharsets.UTF_8.name());
             return decodedURL;
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);

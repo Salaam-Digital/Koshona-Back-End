@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ImageServiceImplementation implements ImageService {
 
     private final ImageRepository imageRepository;
-    private final URLEncoder encoder = new URLEncoder();
+    private final URLEncoder encoder;
     private final FileNameHelper fileHelper;
 
     @Override
